@@ -4,7 +4,7 @@ function fillPolygon(vertex, color) {
 
     ctx.beginPath();
     ctx.moveTo(vertex[0][0], vertex[0][1]);
-    for(var v = 1; v < vertex.length; v++) {
+    for (var v = 1; v < vertex.length; v++) {
         ctx.lineTo(vertex[v][0], vertex[v][1]);
     }
     ctx.fill();
@@ -23,4 +23,21 @@ function drawSpikeY(pos, height, width, color) {
     var end = [pos[0], pos[1] + height];
     var corner = [begin[0] + width, pos[1] + height / 2];
     fillPolygon([begin, end, corner], color);
+}
+
+function loadImage(path, xOffset = 0, yOffset = 0, width, height) {
+    var img = document.createElement("img");
+    img.src = path;
+
+    imgObj = { image: img, xOffset, yOffset, width: img.width, height: img.height };
+    
+    if(width != null && height != null) {
+        imgObj.width = width;
+        imgObj.height = height;
+    }
+    return imgObj;
+}
+
+function drawImage(img, x, y, width, height) {
+    ctx.drawImage(img.image, img.xOffset, img.yOffset, img.width, img.height, x, y, width, height);
 }
