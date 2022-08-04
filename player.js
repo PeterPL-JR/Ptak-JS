@@ -19,8 +19,8 @@ function initPlayer() {
         textures[i] = loadImage("player.png", i * PLAYER_IMG_WIDTH, 0, PLAYER_IMG_WIDTH, PLAYER_IMG_HEIGHT);
     }
 }
-
 function renderPlayer() {
+    var xFlip = getSide() == 1;
     texIndex = (time % TEX_CHANGE_SPEED < TEX_CHANGE_SPEED / 2) ? 0 : 1;
-    drawImage(textures[texIndex], playerX, playerY, PLAYER_WIDTH + 1, PLAYER_HEIGHT);
+    drawFlippedImage(textures[texIndex], playerX, playerY, PLAYER_WIDTH + 1, PLAYER_HEIGHT, xFlip);
 }

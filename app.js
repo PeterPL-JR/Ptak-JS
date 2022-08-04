@@ -107,3 +107,10 @@ function getRandomArray(length) {
 function getSide() {
     return points % 2;
 }
+
+function getDegrees(radians) {
+    return radians * 180 / Math.PI;
+}
+function getRadians(degrees) {
+    return degrees * Math.PI / 180;
+}

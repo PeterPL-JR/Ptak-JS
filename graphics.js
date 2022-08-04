@@ -30,8 +30,8 @@ function loadImage(path, xOffset = 0, yOffset = 0, width, height) {
     img.src = path;
 
     imgObj = { image: img, xOffset, yOffset, width: img.width, height: img.height };
-    
-    if(width != null && height != null) {
+
+    if (width != null && height != null) {
         imgObj.width = width;
         imgObj.height = height;
     }
@@ -40,4 +40,27 @@ function loadImage(path, xOffset = 0, yOffset = 0, width, height) {
 
 function drawImage(img, x, y, width, height) {
     ctx.drawImage(img.image, img.xOffset, img.yOffset, img.width, img.height, x, y, width, height);
+}
+
+function drawFlippedImage(img, x, y, width, height, xFlip, yFlip) {
+    ctx.save();
+    ctx.translate(x + width / 2, y + height / 2);
+    ctx.scale(xFlip ? -1 : 1, yFlip ? -1 : 1);
+
+    drawImage(img, -width / 2, -height / 2, width, height);
+    ctx.restore();
+}
+
+function drawRotatedImage(img, x, y, width, height, deg) {
+    var radians = getRadians(deg);
+
+    var translateX = x + width / 2;
+    var translateY = y + height / 2;
+
+    ctx.translate(translateX, translateY);
+    ctx.rotate(radians);
+    drawImage(img, -width / 2, -height / 2, width, height);
+
+    ctx.rotate(-radians);
+    ctx.translate(-translateX, -translateY);
 }
