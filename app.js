@@ -27,6 +27,8 @@ var points = 1;
 function init() {
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
+
+    randomSpikes();
     render();
 }
 
@@ -37,4 +39,65 @@ function render() {
 
     renderWalls();
     renderSpikes();
+}
+
+function randomSpikes() {
+    spikes[0] = [];
+    spikes[1] = [];
+    
+    var activeSpikes = getRandomArray(Y_SPIKES).splice(0, maxSpikes).sort();
+    for(var index of activeSpikes) {
+        spikes[getSide()].push({pos: index});
+    }
+}
+
+function renderWalls() {
+    ctx.fillStyle = foreground;
+    ctx.fillRect(0, 0, WIDTH, WALL_HEIGHT);
+    ctx.fillRect(0, HEIGHT, WIDTH, -WALL_HEIGHT);
+}
+
+function renderSpikes() {
+    var xOffset = (WIDTH - SPIKES_WIDTH) / 2;
+    var yOffset = (HEIGHT - SPIKES_HEIGHT) / 2;
+
+    for(var x = 0; x < X_SPIKES; x++) {
+        var spikeX = xOffset + x * SPIKE_SIZE + SPIKES_OFFSET * x;
+
+        drawSpikeX([spikeX, WALL_HEIGHT], SPIKE_SIZE, SPIKE_LENGTH, foreground);
+        drawSpikeX([spikeX, HEIGHT - WALL_HEIGHT], SPIKE_SIZE, -SPIKE_LENGTH, foreground);
+    }
+
+    var side = getSide();
+    for(var spike of spikes[side]) {
+        var spikeY = yOffset + spike.pos * SPIKE_SIZE + WALL_HEIGHT;
+
+        if(side == 1) drawSpikeY([0, spikeY], SPIKE_SIZE, SPIKE_LENGTH, foreground);
+        else drawSpikeY([WIDTH, spikeY], SPIKE_SIZE, -SPIKE_LENGTH, foreground);
+    }
+}
+
+function getRandom(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomArray(length) {
+    var array = [];
+    for (var i = 0; i < length; i++) array.push(i);
+
+    for (var i = 0; i < array.length * 5; i++) {
+        var newArray = [];
+        for (var j = 0; j < array.length; j++) {
+            var rand = getRandom(0, 1);
+            if (rand == 0) newArray.push(array[j]);
+            else newArray.unshift(array[j]);
+        }
+        if(getRandom(0, 1) == 0) newArray.reverse();
+        array = newArray;
+    }
+    return array;
+}
+
+function getSide() {
+    return points % 2;
 }
