@@ -14,13 +14,16 @@ var playerY = HEIGHT / 2 - PLAYER_HEIGHT / 2;
 const textures = [];
 var texIndex = 0;
 
+const LEFT_SIDE = 0;
+const RIGHT_SIDE = 1;
+
 function initPlayer() {
     for(var i = 0; i < _TEXTURES; i++) {
         textures[i] = loadImage("player.png", i * PLAYER_IMG_WIDTH, 0, PLAYER_IMG_WIDTH, PLAYER_IMG_HEIGHT);
     }
 }
 function renderPlayer() {
-    var xFlip = getSide() == 1;
+    var xFlip = getSide() == LEFT_SIDE;
     texIndex = (time % TEX_CHANGE_SPEED < TEX_CHANGE_SPEED / 2) ? 0 : 1;
     drawFlippedImage(textures[texIndex], playerX, playerY, PLAYER_WIDTH + 1, PLAYER_HEIGHT, xFlip);
 }

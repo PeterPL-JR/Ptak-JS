@@ -17,7 +17,7 @@ const SPIKES_HEIGHT = Y_SPIKES * SPIKE_SIZE + WALL_HEIGHT * 2;
 const WIDTH = SPIKES_WIDTH + 60;
 const HEIGHT = SPIKES_HEIGHT + 60;
 
-var background = "white";
+var background = "#e5e5e5";
 var foreground = "gray";
 
 var maxSpikes = 3;
@@ -43,7 +43,8 @@ function draw() {
 
     renderWalls();
     renderSpikes();
-
+    
+    renderPoints();
     renderPlayer();
 }
 
@@ -55,6 +56,22 @@ function randomSpikes() {
     for (var index of activeSpikes) {
         spikes[getSide()].push({ pos: index });
     }
+}
+
+
+function renderPoints() {
+    var pointsFontSize = points < 100 ? 164 : 136;
+    var pointsFontFamily = "monospace";
+
+    var pointsText = (points < 10 ? "0" : "") + points;
+    fillCircle(WIDTH / 2, HEIGHT / 2, 120, "white");
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = background;
+    ctx.font = "bold " + pointsFontSize + "px " + pointsFontFamily;
+
+    var measure = ctx.measureText(pointsText);
+    ctx.fillText(pointsText, WIDTH / 2, HEIGHT / 2 + (measure.actualBoundingBoxAscent - measure.actualBoundingBoxDescent) / 2);
 }
 
 function renderWalls() {
@@ -78,7 +95,7 @@ function renderSpikes() {
     for (var spike of spikes[side]) {
         var spikeY = yOffset + spike.pos * SPIKE_SIZE + WALL_HEIGHT;
 
-        if (side == 1) drawSpikeY([0, spikeY], SPIKE_SIZE, SPIKE_LENGTH, foreground);
+        if (side == LEFT_SIDE) drawSpikeY([0, spikeY], SPIKE_SIZE, SPIKE_LENGTH, foreground);
         else drawSpikeY([WIDTH, spikeY], SPIKE_SIZE, -SPIKE_LENGTH, foreground);
     }
 }
@@ -88,10 +105,11 @@ function getRandom(min, max) {
 }
 
 function getRandomArray(length) {
+    const EFFICIENCY = 5;
     var array = [];
     for (var i = 0; i < length; i++) array.push(i);
 
-    for (var i = 0; i < array.length * 5; i++) {
+    for (var i = 0; i < array.length * EFFICIENCY; i++) {
         var newArray = [];
         for (var j = 0; j < array.length; j++) {
             var rand = getRandom(0, 1);
@@ -105,7 +123,7 @@ function getRandomArray(length) {
 }
 
 function getSide() {
-    return points % 2;
+    return (points + 1) % 2;
 }
 
 function getDegrees(radians) {

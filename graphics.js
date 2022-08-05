@@ -11,6 +11,24 @@ function fillPolygon(vertex, color) {
     ctx.stroke();
 }
 
+function fillCircle(x, y, radius, color) {
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+}
+function drawLine(xBegin, yBegin, xEnd, yEnd, color) {
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+
+    ctx.moveTo(xBegin, yBegin);
+    ctx.lineTo(xEnd, yEnd);
+    ctx.stroke();
+}
+
 function drawSpikeX(pos, width, height, color) {
     var begin = pos;
     var end = [pos[0] + width, pos[1]];
