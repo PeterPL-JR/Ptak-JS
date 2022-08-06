@@ -28,6 +28,14 @@ var points = 1;
 function init() {
     canvas.width = WIDTH;
     canvas.height = HEIGHT;
+
+    document.body.onkeydown = function (event) {
+        if (event.key == "Enter") {
+            if (!falling) {
+                startFalling();
+            }
+        }
+    }
     initPlayer();
 
     randomSpikes();
@@ -43,7 +51,7 @@ function draw() {
 
     renderWalls();
     renderSpikes();
-    
+
     renderPoints();
     renderPlayer();
 }
@@ -124,6 +132,11 @@ function getRandomArray(length) {
 
 function getSide() {
     return (points + 1) % 2;
+}
+function getDir() {
+    var side = getSide();
+    if (side == LEFT_SIDE) return LEFT_DIR;
+    if (side == RIGHT_SIDE) return RIGHT_DIR;
 }
 
 function getDegrees(radians) {
